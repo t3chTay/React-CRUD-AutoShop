@@ -1,13 +1,13 @@
 from flask import Flask
 from app.models import db
 from app.extensions import ma
-
+from config import DevelopmentConfig
 
 def create_app(config_name=None):
     app = Flask(__name__)
 
     if config_name == "DevelopmentConfig":
-        from config import DevelopmentConfig
+        
         app.config.from_object(DevelopmentConfig)
 
     db.init_app(app)

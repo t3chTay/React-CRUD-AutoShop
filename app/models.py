@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, Date, Float, ForeignKey
 from datetime import date
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Base(DeclarativeBase):
     pass
@@ -48,4 +49,12 @@ class Mechanic(Base):
     address: Mapped[str] = mapped_column(String(500), nullable=True)
     salary: Mapped[float] = mapped_column(Float, nullable=False)
     
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
+    
     service_tickets = relationship("ServiceTickets", secondary="ticket_mechanics", back_populates="mechanics")
+    
+    def set_password(self, raw_password: str) -> None:
+        self.password = generate_password_hash(raw_password)
+        
+    def check_password(self, raw_password: str) -> bool:
+        return check_password_hash(self.password, raw_password)

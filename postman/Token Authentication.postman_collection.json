@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "ca6834ec-b7b1-4959-8cd3-ac2294600c8f",
-    "name": "api-app-factory-pattern",
+    "name": "Token Authentication",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48505498",
     "_collection_link": "https://go.postman.co/collection/48505498-ca6834ec-b7b1-4959-8cd3-ac2294600c8f?source=collection_link"
