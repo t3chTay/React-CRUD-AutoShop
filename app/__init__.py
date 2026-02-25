@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, jsonify
 from app.models import db
 from app.extensions import ma, limiter, cache
 from config import DevelopmentConfig, ProductionConfig
-# from flask_swagger import swagger
-# from flask_swagger_ui import get_swaggerui_blueprint
+from flask_swagger import swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 # from marshmallow.exceptions import ValidationError
 
 # def create_app(config_name=None):
@@ -84,5 +84,33 @@ def create_app(config_name=None):
     app.register_blueprint(service_ticket_bp, url_prefix="/service-tickets")
     app.register_blueprint(customers_bp, url_prefix="/customers")
     app.register_blueprint(parts_bp, url_prefix="/parts")
+    
+    @app.get("/swagger.json")
+    def swagger_spec():
+        swag = swagger(app)
+        swag["info"]["title"] = "Auto Shop API"
+        swag["info"]["version"] = "1.0"
+
+        swag["securityDefinitions"] = {
+            "BearerAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "Enter: Bearer <your_token>"
+            }
+        }
+        return jsonify(swag)
+
+    SWAGGER_URL = "/docs"
+    API_URL = "/swagger.json"
+
+    swagger_ui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={"app_name": "Auto Shop API"}
+    )
+
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)        
+    
 
     return app
