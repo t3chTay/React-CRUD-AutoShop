@@ -16,6 +16,26 @@ ticket_schema = ServiceTicketSchema(many=True)
 
 @mechanic_bp.post("/")
 def create_mechanic():
+    """
+    ======
+    tags: 
+        - Mechanics
+    summary: create a new mechanic
+    description: registers a new mechanic in system
+    parameters: 
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: '#/definitions/MechanicPayload'
+    responses: 
+        201: 
+            description: mechanic successfully created
+            schema:
+                $ref: '#/definitions/MechanicResponse'
+        400: 
+            description: Validation error
+    """
     data = request.get_json() or {}
     mechanic = mechanic_schema.load(data)
 
@@ -29,6 +49,26 @@ def create_mechanic():
 @mechanic_bp.post("/login")
 @limiter.limit("5 per minute")
 def login():
+    """
+    =====
+    tags:
+    - mechanics
+    summary: logs in mechanic
+    description: authenticates mechanic & returns jwt token.
+    parameters:
+    - in: body
+        name: body
+        required:true
+        schema:
+        $ref: '#/definitions/LoginPayload'
+    responses:
+    200:
+        description: token returned
+        schema:
+        $ref: '#/definitions/TokenResponse'
+    401:
+        description: invalid credentials
+    """
     data = request.get_json() or {}
     creds = login_schema.load(data)
 
@@ -46,6 +86,20 @@ def login():
 @mechanic_bp.get("/")
 @cache.cached(timeout=60)
 def get_mechanics():
+    """
+    ===
+    tags:
+    - Mechanics
+    summary: get all mechanics
+    description: returns list of mechanics.
+    responses:
+    200:
+        description: list of mechanics
+        schema:
+        type: array
+        items:
+            $ref: '#/definitions/MechanicResponse'
+    """
     mechanics = db.session.scalars(select(Mechanic)).all()
     return mechanics_schema.jsonify(mechanics), 200
 
@@ -53,6 +107,22 @@ def get_mechanics():
 @mechanic_bp.get("/my-tickets")
 @token_required
 def my_tickets():
+    """
+    ====
+    tags:
+    - Mechanics
+    summary: get mechanic's tickets
+    description: returns service tickets assigned to the authenticated mechanic.
+    security:
+    - BearerAuth: []
+    responses:
+    200:
+        description: list of service tickets
+    401:
+        description: unauthorized
+    404:
+        description: mechanic not found
+    """
     mechanic_id = g.mechanic_id
 
     mechanic = db.session.get(Mechanic, mechanic_id)
@@ -65,6 +135,31 @@ def my_tickets():
 @mechanic_bp.put("/<int:id>")
 @token_required
 def update_mechanic(id):
+    """
+    ===
+    tags:
+    - Mechanics
+    summary: update mechanic
+    description: updates mechanic information.
+    security:
+    - BearerAuth: []
+    parameters:
+    - in: path
+        name: id
+        required: true
+        type: integer
+    - in: body
+        name: body
+        schema:
+        $ref: '#/definitions/MechanicPayload'
+    responses:
+    200:
+        description: updated mechanic
+    403:
+        description: forbidden
+    404:
+        description: not found
+    """    
     mechanic_id = g.mechanic_id 
 
     if mechanic_id != id:
@@ -92,6 +187,28 @@ def update_mechanic(id):
 @mechanic_bp.delete("/<int:id>")
 @token_required
 def delete_mechanic(id):
+    """
+    ====
+    tags:
+    - Mechanics
+    summary: delete mechanic
+    description: deletes authenticated mechanic.
+    security:
+    - BearerAuth: []
+    parameters:
+    - in: path
+        name: id
+        required: true
+        type: integer
+    responses:
+    200:
+        description: successfully deleted
+    403:
+        description: forbidden
+    404:
+        description: not found
+    """    
+    
     mechanic_id = g.mechanic_id 
 
     if mechanic_id != id:
@@ -107,6 +224,16 @@ def delete_mechanic(id):
 
 @mechanic_bp.get("/most-tickets")
 def mechanics_by_most_tickets():
+    """
+    =====
+    tags:
+    - Mechanics
+    summary: mechanics ranked by most tickets
+    description: returns mechanics ordered by ticket count.
+    responses:
+    200:
+        description: ranked mechanics
+    """
     statement = (
         select(
             Mechanic,
