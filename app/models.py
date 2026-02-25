@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, Date, Float, ForeignKey
+from sqlalchemy import Integer, String, Date, Float, ForeignKey, Table, Column
 from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -9,6 +9,12 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
+ticket_inventory = Table(
+    "ticket_inventory",
+    Base.metadata,
+    Column("ticket_id", ForeignKey("service_tickets.id"), primary_key=True),
+    Column("inventory_id", ForeignKey("inventory.id"), primary_key=True),
+)
 class Customers(Base):
     __tablename__ = 'customers'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -32,6 +38,8 @@ class ServiceTickets(Base):
     
     customer = relationship("Customers", back_populates="service_tickets")
     mechanics = relationship("Mechanic", secondary="ticket_mechanics", back_populates="service_tickets")
+    inventories = relationship("Inventory", secondary=ticket_inventory, back_populates="service_tickets")
+    parts = relationship("Part", back_populates="service_ticket")
 
 
 class TicketMechanics(Base):
@@ -58,3 +66,28 @@ class Mechanic(Base):
         
     def check_password(self, raw_password: str) -> bool:
         return check_password_hash(self.password, raw_password)
+    
+
+class Inventory(Base):
+    __tablename__ = "inventory"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+
+    service_tickets = relationship(
+        "ServiceTickets",
+        secondary=ticket_inventory,
+        back_populates="inventories",
+    )
+    parts = relationship("Part", back_populates="inventory", cascade="all, delete-orphan")
+
+
+class Part(Base):
+    __tablename__ = "parts"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    inventory_id: Mapped[int] = mapped_column(ForeignKey("inventory.id"), nullable=False)
+    ticket_id: Mapped[int | None] = mapped_column(ForeignKey("service_tickets.id"), nullable=True)
+
+    inventory = relationship("Inventory", back_populates="parts")
+    service_ticket = relationship("ServiceTickets", back_populates="parts")

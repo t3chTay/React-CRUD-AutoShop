@@ -1,6 +1,6 @@
 from flask import request, abort
 from sqlalchemy import select
-from app.models import db, ServiceTickets, Mechanic
+from app.models import db, ServiceTickets, Mechanic, Inventory, Part
 from . import service_ticket_bp
 from .schemas import ServiceTicketSchema
 
@@ -60,3 +60,23 @@ def remove_mechanic(ticket_id, mechanic_id):
         db.session.commit()
 
     return ticket_schema.jsonify(ticket), 200
+
+@service_ticket_bp.put("/<int:ticket_id>/add-part/<int:inventory_id>")
+def add_part_to_ticket(ticket_id, inventory_id):
+    ticket = db.session.get(ServiceTickets, ticket_id)
+    if not ticket:
+        abort(404, description="Service ticket not found")
+
+    item = db.session.get(Inventory, inventory_id)
+    if not item:
+        abort(404, description="Inventory item not found")
+
+    new_part = Part(inventory_id=inventory_id, service_ticket=ticket)
+    db.session.add(new_part)
+
+    db.session.commit()
+    return {
+        "message": f"Added 1 '{item.name}' to ticket {ticket_id}",
+        "part_instance_id": new_part.id
+    }, 200
+    
