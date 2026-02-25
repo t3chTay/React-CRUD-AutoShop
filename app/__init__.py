@@ -85,6 +85,9 @@ def create_app(config_name=None):
     app.register_blueprint(customers_bp, url_prefix="/customers")
     app.register_blueprint(parts_bp, url_prefix="/parts")
     
+    @app.get("/")
+    def home():
+        return {"message": "Auto Shop API is running", "docs": "/docs"}, 200
     @app.get("/swagger.json")
     def swagger_spec():
         swag = swagger(app)
