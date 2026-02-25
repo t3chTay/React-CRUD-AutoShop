@@ -4,7 +4,7 @@ from app.extensions import ma, limiter, cache
 from config import DevelopmentConfig, ProductionConfig
 from flask_swagger import swagger
 from flask_swagger_ui import get_swaggerui_blueprint
-# from marshmallow.exceptions import ValidationError
+from marshmallow.exceptions import ValidationError
 
 # def create_app(config_name=None):
 #     app = Flask(__name__)
@@ -110,7 +110,11 @@ def create_app(config_name=None):
         config={"app_name": "Auto Shop API"}
     )
 
-    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)        
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)     
+    
+    @app.errorhandler(ValidationError)
+    def handle_marshmallow_validation(err):
+        return jsonify ({"errors": err.messages}), 400   
     
 
     return app
