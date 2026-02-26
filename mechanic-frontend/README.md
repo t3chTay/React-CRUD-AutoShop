@@ -21,6 +21,4 @@ python -m unittest discover -s tests -p "test*.py"
 ------
 
 If you also deploy the frontend, add:
-
-```md
 **Frontend (Render):** https://frontend-autoshop.onrender.com
