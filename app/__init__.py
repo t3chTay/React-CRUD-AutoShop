@@ -69,5 +69,9 @@ def create_app(config_name=None):
     def handle_marshmallow_validation(err):
         return jsonify ({"errors": err.messages}), 400   
     
+    @app.get("/init-db")
+    def init_db():
+        db.create_all()
+        return {"message": "DB initialized"}, 200
 
     return app
