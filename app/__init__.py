@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from app.models import db
+from app.models import db, Base
 from app.extensions import ma, limiter, cache
 from config import DevelopmentConfig, ProductionConfig
 from flask_swagger import swagger
@@ -34,8 +34,9 @@ def create_app(config_name=None):
     app.register_blueprint(customers_bp, url_prefix="/customers")
     app.register_blueprint(parts_bp, url_prefix="/parts")
     
+    import app.models
     with app.app_context():
-        db.create_all()
+        Base.metadata.create_all(bind=db.engine)
     
     @app.get("/")
     def home():
