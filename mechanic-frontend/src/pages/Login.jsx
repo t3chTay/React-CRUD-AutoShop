@@ -32,11 +32,13 @@ export default function Login() {
   };
 
   return (
-    <div style={{ padding: 16, maxWidth: 520 }}>
+    <>
+    <h1>Auto Shop Mechanic Portal</h1>
+    <div className="container">
       <h2>Mechanic Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <div className="error">{error}</div>}
     {/* login form */}
-      <form onSubmit={onSubmit} style={{ display: "grid", gap: 10 }}>
+      <form onSubmit={onSubmit} style={{display:"grid", gap: 10}}>
         <input name="email" placeholder="Email" value={form.email} onChange={onChange} required />
         <input
           name="password"
@@ -48,9 +50,10 @@ export default function Login() {
         />
         <button type="submit">Login</button>
       </form>
-      <p style={{ marginTop: 12 }}>
+      <p style={{marginTop: 12 }}>
         Need an account? <Link to="/register">Register</Link>
       </p>
     </div>
+    </>
   );
 }

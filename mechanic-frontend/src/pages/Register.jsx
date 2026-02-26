@@ -41,10 +41,12 @@ export default function Register() {
   };
 
   return (
-    <div style={{ padding: 16, maxWidth: 520 }}>
+    <>
+    <h1>Auto Shop Mechanic Portal</h1>
+    <div className="container">
       <h2>Register Mechanic</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
+      {error && <div className="error">{error}</div>}
+      {success && <div className="success">{success}</div>}
      {/* sign up form */}
       <form onSubmit={onSubmit} style={{ display: "grid", gap: 10 }}>
         <input name="first_name" placeholder="First name" value={form.first_name} onChange={onChange} required />
@@ -61,5 +63,6 @@ export default function Register() {
         Login</Link>
       </p>
     </div>
+    </>
   );
 }

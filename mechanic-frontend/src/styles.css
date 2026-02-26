@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* page */
+body {
+  background: radial-gradient(circle at top, #1e293b, #0f172a 60%);
+  color: white;
+  min-height: 100vh;
+}
+/* main center container */
+.container {
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #1e293b;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+/* form input */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+}
+
+/* buttons */
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* success & error msgs */
+.success {
+  background: #16a34a;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.error {
+  background: #dc2626;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 50px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-brand {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a {
+  position: relative;
+  margin-left: 30px;
+  text-decoration: none;
+  color: #e2e8f0;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+
+.nav-links a:hover {
+  color: #3b82f6;
+}
+
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -6px;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+
+.active {
+  color: #3b82f6;
+}
+
+.active::after {
+  width: 100%;
+}

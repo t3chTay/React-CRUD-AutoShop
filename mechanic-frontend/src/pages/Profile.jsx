@@ -113,11 +113,13 @@ export default function Profile() {
 
 
   return (
-    <div style={{ padding: 16, maxWidth: 700 }}>
+    <>
+    <h1>Auto Shop Mechanic Portal</h1>
+    <div className="container">
       <h2>My Profile</h2>
 
-      {err && <p style={{ color: "red" }}>{err}</p>}
-      {msg && <p style={{ color: "green" }}>{msg}</p>}
+      {err && <div className="error">{err}</div>}
+      {msg && <div className="success">{msg}</div>}
       {mech && (
         <div style={{ marginBottom: 16, padding: 12, border: "1px solid #ddd", borderRadius: 8 }}>
           <div><b>ID:</b> {mech.id}</div>
@@ -160,5 +162,7 @@ export default function Profile() {
         </ul>
       )}
     </div>
+
+    </>
   );
 }
