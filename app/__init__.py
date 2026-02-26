@@ -21,7 +21,7 @@ def create_app(config_name=None):
     cache.init_app(app)
     CORS(
         app,
-        resources={r"/*": {"origins": ["http://localhost:5173", "https://auto-shop-api.onrender.com"]}},
+        resources={r"/*": {"origins": "*" }},
         allow_headers=["Content-Type", "Authorization"],
         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],)
 
