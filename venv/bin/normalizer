@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/Users/t3chnerd/Documents/Coding_temple/FLASK/API Deployment & CI&CD Pipeline/venv/bin/python3" "$0" "$@"
+'''exec' "/Users/t3chnerd/Documents/Coding_temple/REACT/React CRUD/venv/bin/python" "$0" "$@"
 ' '''
 import sys
 from charset_normalizer.cli import cli_detect

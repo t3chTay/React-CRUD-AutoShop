@@ -9,7 +9,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV '/Users/t3chnerd/Documents/Coding_temple/FLASK/API Deployment & CI&CD Pipeline/venv'
+setenv VIRTUAL_ENV '/Users/t3chnerd/Documents/Coding_temple/REACT/React CRUD/venv'
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/"bin":$PATH"
